@@ -1,0 +1,22 @@
+{
+  "name": "tagged.icu",
+  "short_name": "tagged.icu",
+  "icons": [
+	{
+	  "src": "/images/favicon/web-app-manifest-192x192.png",
+	  "sizes": "192x192",
+	  "type": "image/png",
+	  "purpose": "maskable"
+	},
+	{
+	  "src": "/images/favicon/web-app-manifest-512x512.png",
+	  "sizes": "512x512",
+	  "type": "image/png",
+	  "purpose": "maskable"
+	}
+  ],
+  "start_url": "/",
+  "theme_color": "#bb2e3a",
+  "background_color": "#121414",
+  "display": "standalone"
+}
