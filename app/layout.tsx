@@ -6,7 +6,6 @@ import {Unbounded} from "next/font/google";
 
 import * as React from "react";
 import {getFileURL, getSettings} from "@/lib/database";
-import {Settings} from "@/types/interfaces";
 import ServerError from "@/components/errors/ServerError";
 
 const unbounded = Unbounded({
@@ -17,7 +16,7 @@ const unbounded = Unbounded({
     weight: ["200", "300", "400", "500", "600", "700", "800", "900"]
 });
 
-const description = "Hello faggots i'm tagged wanna be hackerman hvh no name skid";
+const description = "Welcome to tagged's digital space";
 
 export const metadata: Metadata = {
     title: {
@@ -26,7 +25,7 @@ export const metadata: Metadata = {
     },
     description: description,
     keywords: description,
-    authors: [{name: "NATroutter", url: "https://tagged.icu"},],
+    authors: [{name: "NATroutter", url: "https://natroutter.fi"},],
     manifest: "/manifest.json",
     appleWebApp: {
         title: "tagged.icu",
