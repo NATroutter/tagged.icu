@@ -2,36 +2,34 @@ import type {Metadata, Viewport} from "next";
 import "@/styles/globals.css";
 import "@/styles/markdown.css";
 
-import {Montserrat} from "next/font/google";
+import {Unbounded} from "next/font/google";
 
 import * as React from "react";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import {getFooterData, getNavigatorData} from "@/lib/database";
-import Script from 'next/script'
+import {getFileURL, getSettings} from "@/lib/database";
+import {Settings} from "@/types/interfaces";
 import ServerError from "@/components/errors/ServerError";
 
-const montserrat = Montserrat({
-    variable: "--font-montserrat",
+const unbounded = Unbounded({
+    variable: "--font-unbounded",
     subsets: ["latin"],
-    style: ["normal", "italic"],
+    style: ["normal"],
     display: "swap",
-    weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"]
+    weight: ["200", "300", "400", "500", "600", "700", "800", "900"]
 });
 
-const description = "Welcome to NATroutter.fi, a personal website showcasing my work as a fullstack developer, my passion for technology, and my creative projects. Explore my skills, connect with me, and learn more about what I do.";
+const description = "Hello faggots i'm tagged wanna be hackerman hvh no name skid";
 
 export const metadata: Metadata = {
     title: {
-        template: 'NATroutter.fi // %s',
-        default: "NATroutter.fi",
+        template: 'tagged.icu // %s',
+        default: "tagged.icu",
     },
     description: description,
     keywords: description,
-    authors: [{name: "NATroutter", url: "https://NATroutter.fi"},],
+    authors: [{name: "NATroutter", url: "https://tagged.icu"},],
     manifest: "/manifest.json",
     appleWebApp: {
-        title: "NATroutter.fi",
+        title: "tagged.icu",
         statusBarStyle: 'black-translucent',
         startupImage: [
             '/images/favicon/apple-touch-icon.png',
@@ -50,59 +48,50 @@ export const metadata: Metadata = {
         shortcut: [{url: "/images/favicon/favicon.ico"}],
     },
     other: {
-        'msapplication-TileColor': '#615f5f',
+        'msapplication-TileColor': '#02abec',
         'msapplication-config': '/manifest.json',
     },
     openGraph: {
         type: "website",
-        url: "https://natroutter.fi",
-        title: "NATroutter.fi",
+        url: "https://tagged.icu",
+        title: "tagged.icu",
         description: description,
-        images: "https://NATroutter.fi/logo.png",
-    },
-    twitter: {
-        card: "summary_large_image",
-        title: "NATroutter.fi",
-        siteId: "3684164656",
-        creatorId: "3684164656",
-        description: description,
-        images: "https://NATroutter.fi/logo.png",
+        images: "https://tagged.icu/logo.png",
     }
 }
 
 export const viewport: Viewport = {
-    themeColor: '#bb2e3a',
+    themeColor: '#02abec',
 }
 
 export default async function RootLayout({children}: Readonly<{ children: React.ReactNode; }>) {
-    const NavData = await getNavigatorData();
-    const footerData = await getFooterData();
+    const settings = await getSettings();
+
+
+    if (settings && settings.id && settings.background) {
+        settings.background = getFileURL("settings", settings.id, settings.background)
+    }
+
+
 
     return (
         <html lang="en">
-        <body className={`${montserrat.variable} ${montserrat.className} bg-background bg-cover text-text font-normal flex flex-col min-h-screen m-0 p-0 overflow-y-auto`}>
+        <body className={`${unbounded.variable} ${unbounded.className} flex bg-background bg-cover text-text font-normal m-0 p-0 overflow-y-auto`}>
+        {(settings && settings.background) && (
+            <div className="fixed inset-0 top-0 bottom-0 left-0 right-0 bg-no-repeat bg-center bg-cover z-0"
+                 style={{
+                     backgroundImage: `url(${settings.background})`,
+                     filter: `brightness(${settings.bg_brightness}) blur(${settings.bg_blur}px)`
+                 }}
+            >
+            </div>
+        )}
 
-            {(NavData && (NavData.length > 0) && footerData) ? (
-                <>
-                    <Header data={NavData}/>
-                    <main className="relative flex flex-col flex-grow min-h-screen pb-[7.5rem]">
-                        {/*mt-[7.5rem]*/}
-                        {children}
-                    </main>
-                    <Footer data={footerData}/>
-                </>
-            ) : (
-                <main className="flex flex-col flex-grow justify-center m-auto text-center">
-                    <ServerError/>
-                </main>
-            )}
+        <main className="relative flex mx-auto flex-col flex-grow z-[2] min-h-screen px-4 py-20">
+            {settings ? children : <ServerError code="0x1"/>}
+        </main>
 
         </body>
-        <Script
-            async
-            src={process.env.UMAMI_SCRIPT}
-            data-website-id={process.env.UMAMI_TOKEN}
-        />
         </html>
     );
 }

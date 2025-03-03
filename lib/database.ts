@@ -1,5 +1,5 @@
 import PocketBase from "pocketbase";
-import {HomePage} from "@/types/interfaces";
+import {Settings} from "@/types/interfaces";
 import logger from "@/lib/logger";
 import {withCache} from "@/lib/cache";
 
@@ -7,7 +7,10 @@ import {withCache} from "@/lib/cache";
 //***************************************
 //*            DATABASE UTILS           *
 //***************************************
-export function getFileURL(collection: string, id:string, file:string) : string {
+export function getFileURL(collection: string, id:string, file?:string) : string|undefined {
+	if (!collection) return undefined;
+	if (!id) return undefined;
+	if (!file) return undefined;
 	return `${getPocketBase().baseURL}/api/files/${collection}/${id}/${file}`
 }
 
@@ -18,11 +21,11 @@ export function getPocketBase() : PocketBase {
 	return new PocketBase(process.env.POCKETBASE_ADDRESS);
 }
 
-export async function getHomePage(): Promise<HomePage | undefined> {
+export async function getSettings(): Promise<Settings | undefined> {
 	return withCache(async ()=>{
 		try {
 			const pb = getPocketBase();
-			return await pb.collection("page_home").getFirstListItem<HomePage | undefined>("", {
+			return await pb.collection("settings").getFirstListItem<Settings | undefined>("", {
 				expand: "links",
 				cache: 'no-store',
 			});
@@ -30,7 +33,7 @@ export async function getHomePage(): Promise<HomePage | undefined> {
 			printError(err, "Failed to fetch data for HomePage");
 			return undefined;
 		}
-	}, "home_page_data")
+	}, "settings_data")
 }
 
 //***************************************

@@ -11,11 +11,18 @@ export interface LinkData {
 //*************************************
 //*              Page Data            *
 //*************************************
-export interface HomePage {
+export interface Settings {
 	id: string;
+	profile_picture?: string;
 	username: string;
+	discord_id: string;
 	content: string;
 	links: string[];
+	audio?: string;
+	audio_volume: number;
+	background?: string;
+	bg_blur: number;
+	bg_brightness: number;
 	expand: expandLinks;
 }
 

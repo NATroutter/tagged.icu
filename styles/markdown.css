@@ -325,7 +325,7 @@
 .markdown-body h5,
 .markdown-body h6 {
 	margin-top: var(--base-size-24);
-	margin-bottom: var(--base-size-16);
+	margin-bottom: var(--base-size-4);
 	font-weight: var(--base-text-weight-semibold, 600);
 	line-height: 1.25;
 }
@@ -489,7 +489,7 @@
 .markdown-body pre,
 .markdown-body details {
 	margin-top: 0;
-	margin-bottom: var(--base-size-16);
+	margin-bottom: var(--base-size-4);
 }
 
 .markdown-body blockquote>:first-child {
@@ -629,7 +629,7 @@
 
 .markdown-body dl dd {
 	padding: 0 var(--base-size-16);
-	margin-bottom: var(--base-size-16);
+	margin-bottom: var(--base-size-4);
 }
 
 .markdown-body table th {
@@ -799,7 +799,7 @@
 }
 
 .markdown-body .highlight {
-	margin-bottom: var(--base-size-16);
+	margin-bottom: var(--base-size-4);
 }
 
 .markdown-body .highlight pre {
@@ -1103,7 +1103,7 @@
 
 .markdown-body .markdown-alert {
 	padding: var(--base-size-8) var(--base-size-16);
-	margin-bottom: var(--base-size-16);
+	margin-bottom: var(--base-size-4);
 	color: inherit;
 	border-left: .25em solid var(--borderColor-default);
 }

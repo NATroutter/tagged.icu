@@ -3,23 +3,40 @@
 @tailwind utilities;
 
 :root {
-	--ThemeColor: theme("colors.theme");
-	--CardColor: theme("colors.card");
-	--Card2Color: theme("colors.card2");
+	--text: theme("colors.text");
+	--Card: theme("colors.card");
+	--ScrollBar: theme("colors.scroll_bar");
+	--ScrollBg: theme("colors.scroll_bg");
+}
+
+/** {*/
+/*	cursor: url(https://r2.fakecrime.bio/assets/cursors/chrome.cur), auto !important;*/
+/*}*/
+
+.hr-text {
+	border-top-width: 1px;
+	border-image: -webkit-linear-gradient(left, transparent, var(--text), transparent) 1;
+}
+
+.page-enter-animation {
+	animation-name: slideUp;
+	animation-duration: .35s;
+	animation-timing-function: cubic-bezier(.4,0,.2,1);
+	animation-iteration-count: 1;
 }
 
 ::-webkit-scrollbar {
 	width: 10px;
 }
 ::-webkit-scrollbar-track {
-	background: var(--CardColor);
+	background: var(--ScrollBg);
 }
 .hide-scrollbar-thumb::-webkit-scrollbar-thumb {
 	display: none;
 }
 ::-webkit-scrollbar-thumb {
-	background: var(--Card2Color);
+	background: var(--ScrollBar);
 }
 ::-webkit-scrollbar-thumb:hover {
-	background: var(--Card2Color);
+	background: var(--ScrollBar);
 }
