@@ -1,0 +1,30 @@
+name: publish
+
+on:
+  push:
+    branches: [ "master" ]
+
+env:
+  # Use docker.io for Docker Hub if empty
+  REGISTRY: ghcr.io
+  IMAGE: natroutter/tagged-icu-frontend:latest
+
+jobs:
+  publish:
+    name: publish image
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Login
+        run: |
+          echo ${{ secrets.PAT }} | docker login ghcr.io -u natroutter --password-stdin
+      - name: Build
+        run: |
+          docker build -t ${{ env.REGISTRY }}/${{ env.IMAGE }} \
+            --label "org.opencontainers.image.source=https://github.com/${{ github.repository }}" \
+            --label "org.opencontainers.image.description=tagged.icu Frontend" \
+            --label "org.opencontainers.image.licenses=MIT" \
+            .
+      - name: Publish
+        run: |
+          docker push ${{ env.REGISTRY }}/${{ env.IMAGE }}

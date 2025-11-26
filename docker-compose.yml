@@ -18,8 +18,8 @@ services:
       timeout: 5s
       retries: 5
   frontend:
-    image: ghcr.io/natroutter/natroutter-fi-frontend:latest
-    #image: natroutter-fi-frontend:local #For testing
+    image: ghcr.io/natroutter/tagged-icu-frontend:latest
+    #image: tagged-icu-frontend:local #For testing
     restart: unless-stopped
     ports:
       - 127.0.0.1:8510:3000 #For production
@@ -30,17 +30,3 @@ services:
       backend:
         condition: service_healthy
         restart: true
-
-
-services:
-  frontend:
-    restart: always
-    build:
-      context: .
-      additional_contexts:
-        - app=docker-image://tagged-icu-frontend:latest
-    ports:
-      - 8510:3000
-      #- 127.0.0.1:8510:3000
-    environment:
-      POCKETBASE_ADDRESS: https://api.tagged.icu
