@@ -1,39 +1,33 @@
 import PocketBase from "pocketbase";
-import {Settings} from "@/types/interfaces";
+import type {Settings} from "@/types/interfaces";
 import logger from "@/lib/logger";
-import {withCache} from "@/lib/cache";
+import {config} from "@/lib/config";
 
 
-//***************************************
-//*            DATABASE UTILS           *
-//***************************************
-export function getFileURL(collection: string, id:string, file?:string) : string|undefined {
-	if (!collection) return undefined;
-	if (!id) return undefined;
-	if (!file) return undefined;
-	return `${getPocketBase().baseURL}/api/files/${collection}/${id}/${file}`
+function getFileURL(collection: string, id: string, file: string): string {
+	return `${config.POCKETBASE.PUBLIC}/api/files/${collection}/${id}/${file}`;
 }
-
-//***************************************
-//*          DATABASE GETTERS           *
-//***************************************
-export function getPocketBase() : PocketBase {
-	return new PocketBase(process.env.POCKETBASE_ADDRESS);
+function getPocketBase(): PocketBase {
+	return new PocketBase(config.POCKETBASE.SERVER);
 }
 
 export async function getSettings(): Promise<Settings | undefined> {
-	return withCache(async ()=>{
-		try {
-			const pb = getPocketBase();
-			return await pb.collection("settings").getFirstListItem<Settings | undefined>("", {
-				expand: "links",
-				cache: 'no-store',
-			});
-		} catch (err) {
-			printError(err, "Failed to fetch data for HomePage");
-			return undefined;
-		}
-	}, "settings_data")
+	try {
+		const pb = getPocketBase();
+		const data = await pb.collection("settings").getFirstListItem<Settings | undefined>("", {
+			expand: "links",
+		});
+		if (!data) return undefined;
+
+		data.profile_picture = data.profile_picture && getFileURL("settings", data.id, data.profile_picture);
+		data.background = data.background && getFileURL("settings", data.id, data.background);
+		data.audio = data.audio && getFileURL("settings", data.id, data.audio);
+
+		return data;
+	} catch (err) {
+		printError(err, "Failed to fetch data for HomePage");
+		return undefined;
+	}
 }
 
 //***************************************

@@ -1,10 +1,10 @@
 'use server'
 
-import {withCache} from "@/lib/cache";
-
 //******************************************
 //*           TYPES / INTERFACES           *
 //******************************************
+
+import {config} from "@/lib/config";
 
 export type BadgeType = |
 	"DISCORD_EMPLOYEE" | "PARTNERED_SERVER_OWNER" | "HYPESQUAD_EVENTS" |
@@ -92,47 +92,44 @@ const DiscordBadges: Record<BadgeType, Badge> = {
 //*               FUNCTIONS                *
 //******************************************
 export async function getDiscord(userID: string) : Promise<DiscordUser|undefined> {
-	return await withCache(async () => {
-		const request = await fetch(`https://discord.com/api/v10/users/${userID}`, {
-			headers: {
-				"Authorization": `Bot ${getToken()}`,
-				"Content-Type": "application/json"
-			}
-		})
-		if (!request.ok){
-			try {
-				const resp = await request.json();
-				console.log("[Error] Failed to fetch data ("+request.status+"): ["+resp.code+"] " + resp.message)
-				// eslint-disable-next-line @typescript-eslint/no-unused-vars
-			} catch (e) {
-				console.log("[Error] Failed to fetch data ("+request.status+"): " + request.statusText)
-			}
-			return undefined;
+	const request = await fetch(`https://discord.com/api/v10/users/${userID}`, {
+		headers: {
+			"Authorization": `Bot ${config.DISCORD.TOKEN}`,
+			"Content-Type": "application/json"
 		}
-		const data = await request.json();
-		if (!data) return undefined;
-
-		const badges = decodeBadge(data.public_flags);
-
-		if (data.avatar) {
-			data.avatar = `https://cdn.discordapp.com/avatars/${data.id}/${data.avatar}${data.avatar.startsWith("_a") ? ".gif" : ".png"}`
-		} else {
-			data.avatar = "https://cdn.discordapp.com/embed/avatars/0.png";
+	})
+	if (!request.ok){
+		try {
+			const resp = await request.json();
+			console.log("[Error] Failed to fetch data ("+request.status+"): ["+resp.code+"] " + resp.message)
+			// eslint-disable-next-line @typescript-eslint/no-unused-vars
+		} catch (e) {
+			console.log("[Error] Failed to fetch data ("+request.status+"): " + request.statusText)
 		}
+		return undefined;
+	}
+	const data = await request.json();
+	if (!data) return undefined;
 
-		return {
-			username: data.username,
-			avatar: data.avatar,
-			badges: badges,
-			profile: `https://discord.com/users/${data.id}`
-		};
-	}, "discord_profile")
+	const badges = decodeBadge(data.public_flags);
+
+	if (data.avatar) {
+		data.avatar = `https://cdn.discordapp.com/avatars/${data.id}/${data.avatar}${data.avatar.startsWith("_a") ? ".gif" : ".png"}`
+	} else {
+		data.avatar = "https://cdn.discordapp.com/embed/avatars/0.png";
+	}
+
+	return {
+		username: data.username,
+		avatar: data.avatar,
+		badges: badges,
+		profile: `https://discord.com/users/${data.id}`
+	};
 }
 
 //******************************************
 //*               UTILITIES                *
 //******************************************
-function getToken() : string { return process.env.DISCORD_BOT_TOKEN as string; }
 
 function decodeBadge(flag: number): Badge[] {
 	const userBadges: Badge[] = [];

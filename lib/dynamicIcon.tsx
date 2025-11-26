@@ -1,7 +1,7 @@
 import * as faIcons from "react-icons/fa";
 import * as fa6Icons from "react-icons/fa6";
 
-import {IconBaseProps, IconType} from "react-icons";
+import type {IconBaseProps, IconType} from "react-icons";
 
 interface IconProps extends IconBaseProps {
 	iconName: string;

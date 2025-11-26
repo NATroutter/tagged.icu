@@ -23,6 +23,8 @@ export interface Settings {
 	background?: string;
 	bg_blur: number;
 	bg_brightness: number;
+	bg_card_css: string;
+	content_card_css: string;
 	expand: expandLinks;
 }
 

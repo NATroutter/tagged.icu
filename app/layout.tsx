@@ -4,8 +4,8 @@ import "@/styles/markdown.css";
 
 import {Unbounded} from "next/font/google";
 
-import * as React from "react";
-import {getFileURL, getSettings} from "@/lib/database";
+import type * as React from "react";
+import {getSettings} from "@/lib/database";
 import ServerError from "@/components/errors/ServerError";
 
 const unbounded = Unbounded({
@@ -66,17 +66,10 @@ export const viewport: Viewport = {
 export default async function RootLayout({children}: Readonly<{ children: React.ReactNode; }>) {
     const settings = await getSettings();
 
-
-    if (settings && settings.id && settings.background) {
-        settings.background = getFileURL("settings", settings.id, settings.background)
-    }
-
-
-
     return (
         <html lang="en">
-        <body className={`${unbounded.variable} ${unbounded.className} flex bg-background bg-cover text-text font-normal m-0 p-0 overflow-y-auto`}>
-        {(settings && settings.background) && (
+        <body className={`${unbounded.variable} ${unbounded.className} flex bg-background bg-cover text-foreground font-normal m-0 p-0 overflow-y-auto`}>
+        {(settings?.background) && (
             <div className="fixed inset-0 top-0 bottom-0 left-0 right-0 bg-no-repeat bg-center bg-cover z-0"
                  style={{
                      backgroundImage: `url(${settings.background})`,

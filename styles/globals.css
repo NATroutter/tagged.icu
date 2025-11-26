@@ -1,21 +1,30 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@import "tw-animate-css";
 
-:root {
-	--text: theme("colors.text");
-	--Card: theme("colors.card");
-	--ScrollBar: theme("colors.scroll_bar");
-	--ScrollBg: theme("colors.scroll_bg");
+@theme {
+	--color-background: #2a2a2a;
+	--color-foreground: white;
+
+	--color-primary: #02abec;
+
+	--color-card: rgb(20 20 23 / 31%);
+	--color-border: rgb(120 114 109 / 13%);
+
+	--color-scroll-tab: #20252a;
+	--color-scroll-bg: #272d33;
+
+	--shadow-card: 0 0 25px rgb(9 9 9 / 31%);
+	--shadow-button: hsl(355 81% 46% / 1) 0 0 20px 2px;
+
+	--drop-shadow-foreground: 0 0 2px #ffffff;
+
+	--breakpoint-xs: 28rem;
+
 }
-
-/** {*/
-/*	cursor: url(https://r2.fakecrime.bio/assets/cursors/chrome.cur), auto !important;*/
-/*}*/
 
 .hr-text {
 	border-top-width: 1px;
-	border-image: -webkit-linear-gradient(left, transparent, var(--text), transparent) 1;
+	border-image: -webkit-linear-gradient(left, transparent, var(--color-foreground), transparent) 1;
 }
 
 .page-enter-animation {
@@ -29,14 +38,14 @@
 	width: 10px;
 }
 ::-webkit-scrollbar-track {
-	background: var(--ScrollBg);
+	background: var(--color-scroll-bg);
 }
 .hide-scrollbar-thumb::-webkit-scrollbar-thumb {
 	display: none;
 }
 ::-webkit-scrollbar-thumb {
-	background: var(--ScrollBar);
+	background: var(--color-scroll-tab);
 }
 ::-webkit-scrollbar-thumb:hover {
-	background: var(--ScrollBar);
+	background: var(--color-scroll-tab);
 }

@@ -1,15 +1,15 @@
 import {cn, splitList} from "@/lib/utils"; // Import utility for conditional class names
 import {
 	AnimatePresence, // Enables animation presence detection
-	MotionValue, // Type for motion values
+	type MotionValue, // Type for motion values
 	motion, // Main component for animations
 	useMotionValue, // Hook to create a motion value
 	useSpring, // Hook to create smooth spring animations
 	useTransform, // Hook to transform motion values
 } from "framer-motion";
 import Link from "next/link"; // Next.js Link component for navigation
-import React, {useEffect, useRef, useState} from "react"; // Importing React hooks
-import {LinkData} from "@/types/interfaces";
+import {useEffect, useRef, useState} from "react"; // Importing React hooks
+import type {LinkData} from "@/types/interfaces";
 import DynamicIcon from "@/lib/dynamicIcon";
 import useWindowDimensions from "@/hooks/useWindowDimensions"; // Importing icons from lucide-react
 
@@ -20,7 +20,7 @@ interface AnimatedDockProps {
 }
 
 function getCount(width: number) : number {
-	let count;
+	let count: number;
 	if (width < 300) {
 		count = 1;
 	} else if (width < 360) {
@@ -57,7 +57,8 @@ export default function AnimatedDock({ items, largeClassName }: AnimatedDockProp
 	return (
 		<>
 			{
-			lists && lists.map((list, index) => (
+			lists?.map((list, index) => (
+				// biome-ignore lint/suspicious/noArrayIndexKey: too much work to fix it
 				<LargeDock key={index} items={list} className={largeClassName} animate={width>490} />
 			))
 			}
@@ -78,16 +79,16 @@ const LargeDock = ({items,className,animate}: { items: LinkData[]; className?: s
 					className,
 				)}
 			>
-				{items.map((item, index) => (
-					<DockIcon mouseX={mouseXPosition} key={index} item={item} animate={animate} />
+				{items.map((item) => (
+					<DockIcon mouseX={mouseXPosition} key={item.id} item={item} animate={animate} />
 				))}
 			</motion.div>
 		);
 	}
 	return (
 		<div className={cn("mx-auto h-16 items-center gap-4 rounded-2xl flex max-w-full",className)}>
-			{items.map((item, index) => (
-				<DockIcon mouseX={mouseXPosition} key={index} item={item} animate={animate} />
+			{items.map((item) => (
+				<DockIcon mouseX={mouseXPosition} key={item.id} item={item} animate={animate} />
 			))}
 		</div>
 	);
@@ -140,7 +141,7 @@ function DockIcon({mouseX,item,animate}: { mouseX: MotionValue; item:LinkData,an
 								initial={{ opacity: 0, y: 10, x: "-50%" }} // Initial animation state
 								animate={{ opacity: 1, y: 0, x: "-50%" }} // Animation to visible state
 								exit={{ opacity: 0, y: 2, x: "-50%" }} // Animation to exit state
-								className="absolute -top-8 left-1/2 w-fit -translate-x-1/2 whitespace-pre rounded-md border px-2 py-0.5 text-xs border-neutral-900 bg-neutral-800 text-white"
+								className="absolute -top-8 left-1/2 w-fit whitespace-pre rounded-md border px-2 py-0.5 text-xs border-neutral-900 bg-neutral-800 text-white"
 							>
 								{item.name} {/* Tooltip text */}
 							</motion.div>
@@ -148,7 +149,7 @@ function DockIcon({mouseX,item,animate}: { mouseX: MotionValue; item:LinkData,an
 					</AnimatePresence>
 					<motion.div
 						style={{ width: iconWidth, height: iconHeight }} // Set dynamic icon size
-						className="flex items-center justify-center drop-shadow-theme"
+						className="flex items-center justify-center drop-shadow-foreground"
 					>
 						<DynamicIcon iconName={item.icon} size={60} />
 					</motion.div>
@@ -164,9 +165,10 @@ function DockIcon({mouseX,item,animate}: { mouseX: MotionValue; item:LinkData,an
 				className="flex aspect-square items-center justify-center rounded-full shadow-lg backdrop-blur-md bg-black/20 text-white"
 			>
 				<div
-					className="flex items-center justify-center drop-shadow-theme"
+					className="flex items-center justify-center drop-shadow-foreground"
 				>
-					<DynamicIcon iconName={item.icon} size={60} />
+					<DynamicIcon iconName={item.icon} size={60} className="hidden md:block" />
+					<DynamicIcon iconName={item.icon} size={24} className="flex md:hidden" />
 				</div>
 			</motion.div>
 		</Link>
