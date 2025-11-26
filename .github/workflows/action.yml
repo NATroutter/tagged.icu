@@ -5,9 +5,8 @@ on:
     branches: [ "master" ]
 
 env:
-  # Use docker.io for Docker Hub if empty
   REGISTRY: ghcr.io
-  IMAGE: natroutter/tagged-icu-frontend:latest
+  IMAGE: natroutter/tagged-icu-frontend
 
 jobs:
   publish:
@@ -18,13 +17,14 @@ jobs:
       - name: Login
         run: |
           echo ${{ secrets.PAT }} | docker login ghcr.io -u natroutter --password-stdin
-      - name: Build
+      - name: Build Docker image
         run: |
-          docker build -t ${{ env.REGISTRY }}/${{ env.IMAGE }} \
+          docker build -t ${{ env.REGISTRY }}/${{ env.IMAGE }}:latest \
             --label "org.opencontainers.image.source=https://github.com/${{ github.repository }}" \
             --label "org.opencontainers.image.description=tagged.icu Frontend" \
             --label "org.opencontainers.image.licenses=MIT" \
             .
-      - name: Publish
+
+      - name: Push Docker images
         run: |
-          docker push ${{ env.REGISTRY }}/${{ env.IMAGE }}
+          docker push ${{ env.REGISTRY }}/${{ env.IMAGE }}:latest
