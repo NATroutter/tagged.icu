@@ -5,7 +5,7 @@ import ContentError from "@/components/errors/ContentError";
 import {getDiscord} from "@/lib/DiscordStatus";
 
 // ISR: Revalidate every x seconds
-export const revalidate = 120;
+export const revalidate = 60;
 
 export default async function HomePage() {
   const data = await getSettings();
