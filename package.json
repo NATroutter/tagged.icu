@@ -3,12 +3,12 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-	"dev": "next dev --turbopack",
-	"build": "next build",
-	"start": "next start",
-	"lint": "biome check --write",
-	"docker-build": "docker build --no-cache -t tagged-icu-frontend:local .",
-	"docker-start": "docker compose up -d"
+    "dev": "next dev --turbopack",
+    "build": "next build",
+    "start": "next start",
+    "lint": "biome check --write",
+    "docker-build": "docker build --no-cache -t tagged-icu-frontend:local .",
+    "docker-start": "docker compose up -d"
   },
   "dependencies": {
     "@radix-ui/react-tooltip": "^1.1.8",
@@ -19,7 +19,7 @@
     "framer-motion": "^12.23.24",
     "lucide-react": "^0.477.0",
     "markdown-it": "^14.1.0",
-    "next": "16.0.4",
+    "next": "^16.0.7",
     "pocketbase": "^0.25.1",
     "react": "19.1.0",
     "react-dom": "19.1.0",
