@@ -19,7 +19,7 @@
     "framer-motion": "^12.23.24",
     "lucide-react": "^0.477.0",
     "markdown-it": "^14.1.0",
-    "next": "^16.0.10",
+    "next": "^16.1.5",
     "pocketbase": "^0.25.1",
     "react": "19.1.0",
     "react-dom": "19.1.0",
